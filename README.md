@@ -34,11 +34,11 @@ mapshaper [COUNTY].shp -o encoding=big5 format=topojson [COUNTY].json
 ```
 6. Put the output file in a reachable path from browser (html file)
 
-# Demo Description
+## Demo Description
 1. /test.html: color varies from population of counties
 2. /test2.html: color indication and name showing for a county on hover event
 
-References:
+## References:
 1. http://blog.infographics.tw/2015/04/visualize-geographics-with-d3js/
 2. https://dotblogs.com.tw/explooosion/2017/06/04/020426
 3. http://bl.ocks.org/mapsam/6083585
