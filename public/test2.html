@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .states {
+            fill: gray;
+            stroke: #fff;
+            stroke-width:2px;
+        }
+        .states:hover {
+            fill: steelblue;
+        }
+        h1 {
+            font-family:arial;
+            font-size:2em;
+            color:#333;
+        }
+        #info {
+            position:absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="info"><h1 id="name"></h1></div>
+<svg width="800px" height="600px" viewBox="0 0 800 600"></svg>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+    d3.json("COUNTY.json", function (topodata) {
+        var features = topojson.feature(topodata, topodata.objects["COUNTY"]).features;
+
+        var path = d3.geo.path().projection(
+            d3.geo.mercator().center([121, 24]).scale(6000)
+        );
+
+        d3.select("svg").selectAll("path").data(features)
+            .enter()
+            .append("path")
+            .attr('class', 'states')
+            .attr("d",path)
+            .on('mouseover', function(d){
+                var name = d.properties.COUNTYNAME;
+                return document.getElementById('name').innerHTML=name;
+            });
+    });
+</script>
+</body>
+</html>

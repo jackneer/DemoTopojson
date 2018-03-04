@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg width="800px" height="600px" viewBox="0 0 800 600"></svg>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+    d3.json("COUNTY.json", function (topodata) {
+        var features = topojson.feature(topodata, topodata.objects["COUNTY"]).features;
+
+        var path = d3.geo.path().projection(
+            d3.geo.mercator().center([121, 24]).scale(6000)
+        );
+
+        var density = {
+            "臺北市": 9870.21,
+            "嘉義市": 4487.17,
+            "新竹市": 4240.31,
+            "基隆市": 2796.93,
+            "新北市": 1942.13,
+            "桃園市": 1794.53,
+            "臺中市": 1259.12,
+            "彰化縣": 1193.17,
+            "高雄市": 940.69,
+            "金門縣": 907.16,
+            "臺南市": 860.65,
+            "澎湖縣": 820.60,
+            "雲林縣": 534.43,
+            "連江縣": 448.13,
+            "新竹縣": 386.91,
+            "苗栗縣": 303.94,
+            "屏東縣": 298.85,
+            "嘉義縣": 268.33,
+            "宜蘭縣": 212.89,
+            "南投縣": 121.93,
+            "花蓮縣": 71.08,
+            "臺東縣": 62.43};
+
+        for (var i = features.length - 1; i >= 0; i--) {
+            features[i].properties.density = density[features[i].properties.COUNTYNAME];
+        }
+
+        var color = d3.scale.linear().domain([0,10000]).range(["#090","#f00"]);
+
+        d3.select("svg").selectAll("path").data(features)
+            .enter()
+            .append("path")
+            .attr({
+                d: path,
+                fill: function(d) {
+                    return color(d.properties.density);
+                }
+        });
+    });
+</script>
+</body>
+</html>
